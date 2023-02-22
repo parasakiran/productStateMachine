@@ -7,8 +7,8 @@ class ProductStateWaitingForAdminApproval extends __abstractProductBaseState{
         {
                 parent::__construct($productActionObject);
                 $this->state = ProductStatuses::WaitingForAdminApproval;
-                $this->setVerbs(Array("Approve","Reject"));
-                $this->setView('admin');
+                $this->setVerbs(Array("admin"=>Array("Approve","Reject")));
+                $this->setView(Array('admin'));
         }
 
         function onAction($action)

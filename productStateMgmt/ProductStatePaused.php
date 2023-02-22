@@ -7,26 +7,35 @@ class ProductStateUnPublished extends __abstractProductBaseState{
 	{
 			parent::__construct($orderActionObject);
 			$this->state = ProductStatuses::UnPublished;
-			$this->setVerbs(Array("RequestForApproval"));
-			$this->setView('lender');
+			$this->setVerbs(Array('lender'=>Array("RequestForApproval")));
+			$this->setView(Array('lender'));
 	}
 
 	
 	function onAction($action)
 	{
-		switch($action)
+		switch ($this->getTyp())
 		{
-			case "RequestForApproval":
-			{
-				$this->requestForApproval();
-				return ProductStatuses::WaitingForAdminApproval;
-			}
+			case 'lender':
+				switch($action)
+				{
+					case "RequestForApproval":
+					{
+						$this->requestForApproval();
+						return ProductStatuses::WaitingForAdminApproval;
+					}
+					default:
+					{
+						//Log Error
+						return ProductStatuses::UnPublished;
+					}
+				}
 			default:
 			{
-				//Log Error
+				// Invalid user attempt
 				return ProductStatuses::UnPublished;
 			}
-		}
+		}	
 	}
 	
 	function requestForApproval()

@@ -7,8 +7,8 @@ class ProductStateRejected extends __abstractProductBaseState{
 	{
 			parent::__construct($orderActionObject);
 			$this->state = ProductStatuses::Rejected;
-			$this->setVerbs(Array("Delete"));
-			$this->setView("lender");
+			$this->setVerbs(Array("lender"=>Array("Delete")));
+			$this->setView(Array("lender"));
 	}
 
 	
