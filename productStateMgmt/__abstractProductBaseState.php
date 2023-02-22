@@ -11,11 +11,17 @@ abstract class __abstractProductBaseState
 	private $config;
 	private $link;
 	private $parentObject;
+	private $type;
 	function __construct($parentObject)
 	{
 		$this->verbs = Array();
-		$this->view = "";
+		$this->view = Array();
 		$this->parentObject = $parentObject;
+		
+		if (isset($_SESSION["user_logged"]))
+		{
+			$this->type = $_SESSION["user_details"]["type"];
+		}
 		
 		$ex = new Exception();
 		$trace=$ex->getTrace();
@@ -29,6 +35,7 @@ abstract class __abstractProductBaseState
 	function onReject(){ echo "Invalid State"; return ProductStatuses::NEWW;}
 	function onFailure(){ echo "Invalid State"; return ProductStatuses::NEWW;}
 	function onSuccess(){ echo "Invalid State"; return ProductStatuses::NEWW;}
+	function getTyp() {return $this->type;}
 	function getView(){return $this->view;}
 	function setView($view) {$this->view = $view;}
 	function setVerbs($list){$this->verbs=$list;}
@@ -37,10 +44,15 @@ abstract class __abstractProductBaseState
 		if (!isset($_SESSION["user_logged"]))
 			return [];
 
-		if (isset($_SESSION["user_details"]) && ($_SESSION["user_details"]["type"]!=$this->view))
+
+		if (isset($_SESSION["user_details"]) && (!in_array($_SESSION["user_details"]["type"],$this->view)))
+		{
+			//print_r($this->view);
+			//echo "failed for ".$_SESSION["user_details"]["type"]."<br>";
 			return [];
+		}
 	
-		return $this->verbs; 
+		return $this->verbs[$_SESSION["user_details"]["type"]]; 
 	}
 	
 	function getParentObject()
@@ -50,6 +62,7 @@ abstract class __abstractProductBaseState
 	
 	function msg($msg)
 	{
+		return;
 		$this->parentObject->systemMsg($this->parentObject->getField("buyerId"),$this->parentObject->user_cache_get("id"),$this->parentObject->getField("productId"),$this->parentObject->getField("oid_index"),$msg);
 	}
 	
@@ -58,11 +71,11 @@ abstract class __abstractProductBaseState
 		if (!isset($_SESSION["user_logged"]))
 			return 0;
 
-		if (isset($_SESSION["user_details"]) && ($_SESSION["user_details"]["type"]!=$this->view))
+		if (isset($_SESSION["user_details"]) && (!in_array($_SESSION["user_details"]["type"],$this->view)))
 			return 0;
 
 	
-		return in_array($action,$this->verbs);
+		return in_array($action,$this->verbs[$_SESSION["user_details"]["type"]]);
 	}
 }
 ?>
