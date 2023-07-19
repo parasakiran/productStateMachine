@@ -1,4 +1,11 @@
 <?PHP
+/***********************************************************************
+  Author  	: Parasa Kiran
+  email		: parasa.kiran@gmail.com
+			  
+  Company	: RahaInfoSystems LLP, Bangalore
+  File		: productAction.php 
+*************************************************************************/
 require_once $_SESSION['system']['g_root_path']."/classes/process/__product.php";
 
 
