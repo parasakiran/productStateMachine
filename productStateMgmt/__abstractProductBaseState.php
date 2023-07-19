@@ -1,4 +1,13 @@
 <?PHP
+/***********************************************************************
+  Author  	: Parasa Kiran
+  email		: parasa.kiran@gmail.com
+			  
+  Company	: RahaInfoSystems LLP, Bangalore
+  File		: __abstractProductBaseState.php 
+			an abstract class
+  
+*************************************************************************/
 require_once $_SESSION['system']['g_root_path']."/classes/process/__product.php";
 
 
